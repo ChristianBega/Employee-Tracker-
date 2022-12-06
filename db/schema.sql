@@ -5,6 +5,7 @@ USE employees_db;
 
 
 CREATE TABLE department (
+  /*Primary key - primary identify of this table*/
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 name VARCHAR(30) NOT NULL
 );
@@ -14,6 +15,7 @@ id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 title VARCHAR(30),
 salary DECIMAL,
 department_id INT,
+/*Foriegn key - this is something that relates to another table */
 FOREIGN KEY (department_id)
 REFERENCES department(id)
 ON DELETE SET NULL
@@ -31,3 +33,4 @@ FOREIGN KEY (manager_id)
 REFERENCES employee(id)
 ON DELETE SET NULL
 );
+

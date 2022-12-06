@@ -1,36 +1,35 @@
 const inquirer = require("inquirer");
-const Department = require("../../../lib/departments");
-const Roles = require("../../../lib/roles");
-const Employees = require("../../../lib/employees.js");
-// console.log(Employees);
-// Import classes later !!
-// const  =
+const Database = require("../../../lib/databaseClass.js");
 
-// const Employees = require("./lib/employee.js");
-
-const employees = [];
-
+// Initial prompt function
 function init() {
+  // Add Department Prompt
   const promptAddDepartment = () => {
-    return inquirer.prompt([
-      {
-        type: "input",
-        message: "Please enter the name of the department: ",
-        name: "departmentName",
-      },
-    ]);
+    return inquirer
+      .prompt([
+        {
+          type: "input",
+          message: "Please enter the name of the department: ",
+          name: "departmentName",
+        },
+      ])
+      .then((res) => {
+        Database.addDepartment(res, promptInit);
+        // promptInit();
+      });
   };
+  // Add Role Prompt
   const promptAddRole = () => {
     return inquirer
       .prompt([
         {
           type: "input",
-          message: "Please enter the name of role: ",
+          message: "Please enter the name of the role: ",
           name: "role",
         },
         {
           type: "input",
-          message: "Please enter the salary of role: ",
+          message: "Please enter the salary of the role: ",
           name: "salary",
         },
         {
@@ -40,14 +39,68 @@ function init() {
         },
       ])
       .then((res) => {
-        const EmployeeEl = new Employees(res.role, res.salary, res.department);
-        employees.push(EmployeeEl);
+        // Database =
+        // pass addRole to addRole method????
+        Database.addRoles(res, promptInit);
+        // promptInit();
       });
   };
-  // const promptAddEmployee = () => {};
-
-  // const promptUpdateEmployee = () => {};
-
+  // Add Department Prompt
+  const promptAddEmployee = () => {
+    //
+    return inquirer
+      .prompt([
+        {
+          type: "input",
+          message: "Please enter the first name of the employee: ",
+          name: "firstName",
+        },
+        {
+          type: "input",
+          message: "Please enter the last name of the employee: ",
+          name: "lastName",
+        },
+        {
+          type: "input",
+          message: "Please enter the role ID:  ",
+          name: "role_id",
+        },
+        {
+          type: "input", // list
+          message: "Please enter the employees manager: ",
+          choices: [],
+          name: "manager",
+        },
+      ])
+      .then((res) => {
+        // console.log(res);
+        Database.addEmployees(res, promptInit);
+        // promptInit();
+      });
+  };
+  // Update Employee Prompt
+  const promptUpdateEmployee = () => {
+    return inquirer
+      .prompt([
+        {
+          type: "input",
+          message: "Please enter an employee name to update: ",
+          name: "firstName",
+        },
+        {
+          type: "input",
+          message: "Please update that employees role:  ",
+          name: "updatedRole",
+        },
+      ])
+      .then((res) => {
+        const updatedEmployee = new Employees(res.firstName, res.updatedRole);
+        console.log(updatedEmployee);
+        // pass updatedEmployee t0 updateEmployeesRecords???
+        updatedEmployee.updateEmployeesRecords();
+      });
+  };
+  // Initial prompt (first to fire)
   const promptInit = () => {
     return inquirer
       .prompt([
@@ -70,21 +123,13 @@ function init() {
         console.log(resChoice);
         switch (resChoice.optionType) {
           case "View all departments":
-            console.log(resChoice.optionType);
-            // call my department class
-            const getRecords = new Department();
-            getRecords.getDepartmentsRecords();
-            promptInit();
+            Database.getDepartmentsRecords(promptInit);
             break;
           case "View all roles":
-            console.log(resChoice.optionType);
-            const getRoles = new Roles();
-            getRoles.getRolesRecords();
+            Database.getRolesRecords(promptInit);
             break;
           case "View all employees":
-            console.log(resChoice.optionType);
-            const getEmployees = new Employees();
-            getEmployees.getEmployeesRecords();
+            Database.getEmployeesRecords(promptInit);
             break;
           case "Add a department":
             console.log(resChoice.optionType);
@@ -111,17 +156,6 @@ function init() {
     // Switch statement to determine next action
     // Ex. case "View all departments" > calls viewDepartments function which handles sql functionality
   };
-  // WHEN I choose to add a department
-  // THEN I am prompted to Enter : Name of department > Then add that department to the DB
-
-  // WHEN I choose to add a role
-  // THEN I am prompted to Enter : name, salary, and department for the role > THEN add that role to the DB
-
-  // WHEN I Choose to add an employee
-  // THEN I am prompted to Enter : first name, last name, and manager > THEN add that role to the DB
-
-  // WHEN I choose to update an employee
-  // THEN I am prompted to select an Employee to update : new role
 
   promptInit();
 }
