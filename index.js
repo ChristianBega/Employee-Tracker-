@@ -1,10 +1,5 @@
 const inquirer = require("inquirer");
 const Database = require("./lib/databaseClass");
-let test = [];
-const displayDepartmentNames = async () => {
-  test = await Database.getDepartmentNames();
-  return test;
-};
 
 // Initial prompt function
 function init() {
@@ -39,15 +34,14 @@ function init() {
         {
           type: "list",
           message: "Please enter the department: ",
-          choices: test,
+          //Was unable to get data to display into choices from data query - future fix
+          //Instead passing id's        
+          choices: [1, 2, 3, 4, 5],
           name: "department",
         },
       ])
       .then((res) => {
-        // Database =
-        // pass addRole to addRole method????
         Database.addRoles(res, promptInit);
-        // promptInit();
       });
   };
   // Add Department Prompt
@@ -84,29 +78,28 @@ function init() {
       });
   };
   // Update Employee Prompt
-  const promptUpdateEmployee = () => {
-    // const allEmployees = getEmployeesRecords();
-    // console.log(allEmployees);
-    return inquirer
-      .prompt([
-        {
-          type: "input",
-          message: "Please enter an employee name to update: ",
-          name: "firstName",
-        },
-        {
-          type: "input",
-          message: "Please update that employees role:  ",
-          name: "updatedRole",
-        },
-      ])
-      .then((res) => {
-        const updatedEmployee = new Employees(res.firstName, res.updatedRole);
-        console.log(updatedEmployee);
-        // pass updatedEmployee t0 updateEmployeesRecords???
-        updatedEmployee.updateEmployeesRecords();
-      });
-  };
+  // const promptUpdateEmployee = () => {
+  //   // const allEmployees = getEmployeesRecords();
+  //   // console.log(allEmployees);
+  //   return inquirer
+  //     .prompt([
+  //       {
+  //         type: "input",
+  //         message: "Please enter an employee name to update: ",
+  //         name: "firstName",
+  //       },
+  //       {
+  //         type: "input",
+  //         message: "Please update that employees role:  ",
+  //         name: "updatedRole",
+  //       },
+  //     ])
+  //     .then((res) => {
+  //       const updatedEmployee = new Employees(res.firstName, res.updatedRole);
+
+  //       updatedEmployee.updateEmployeesRecords();
+  //     });
+  // };
   // Initial prompt (first to fire)
   const promptInit = () => {
     return inquirer
@@ -158,10 +151,6 @@ function init() {
             console.log("Default case");
         }
       });
-
-    // .then // promise
-    // Switch statement to determine next action
-    // Ex. case "View all departments" > calls viewDepartments function which handles sql functionality
   };
 
   promptInit();
