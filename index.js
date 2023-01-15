@@ -1,5 +1,10 @@
 const inquirer = require("inquirer");
-const Database = require("../../../lib/databaseClass.js");
+const Database = require("./lib/databaseClass");
+let test = [];
+const displayDepartmentNames = async () => {
+  test = await Database.getDepartmentNames();
+  return test;
+};
 
 // Initial prompt function
 function init() {
@@ -15,7 +20,6 @@ function init() {
       ])
       .then((res) => {
         Database.addDepartment(res, promptInit);
-        // promptInit();
       });
   };
   // Add Role Prompt
@@ -33,8 +37,9 @@ function init() {
           name: "salary",
         },
         {
-          type: "input",
+          type: "list",
           message: "Please enter the department: ",
+          choices: test,
           name: "department",
         },
       ])
@@ -80,6 +85,8 @@ function init() {
   };
   // Update Employee Prompt
   const promptUpdateEmployee = () => {
+    // const allEmployees = getEmployeesRecords();
+    // console.log(allEmployees);
     return inquirer
       .prompt([
         {
